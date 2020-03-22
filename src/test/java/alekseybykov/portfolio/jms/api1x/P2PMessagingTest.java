@@ -10,10 +10,13 @@ import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
+import javax.jms.QueueBrowser;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import java.util.Enumeration;
 
 import static java.util.Objects.nonNull;
 import static org.junit.Assert.assertEquals;
@@ -43,7 +46,7 @@ public class P2PMessagingTest {
 	public void testSendTextMessageToQueueAndThenReceive() {
 		try {
 			String message = "message";
-			long timeout = 3000;
+			long timeout = 10_000;
 
 			Session session = connection.createSession();
 			MessageProducer producer = session.createProducer(queue);
@@ -57,6 +60,31 @@ public class P2PMessagingTest {
 			TextMessage receivedMessage = (TextMessage) consumer.receive(timeout);
 
 			assertEquals(message, receivedMessage.getText());
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testSendTextMessagesToQueueAndThenBrowseWithoutRemoving() {
+		try {
+			String message = "message";
+
+			Session session = connection.createSession();
+			MessageProducer producer = session.createProducer(queue);
+
+			TextMessage firstTextMessage = session.createTextMessage(message);
+			TextMessage secondTextMessage = session.createTextMessage(message);
+
+			producer.send(firstTextMessage);
+			producer.send(secondTextMessage);
+
+			QueueBrowser queueBrowser = session.createBrowser(queue);
+			Enumeration messages = queueBrowser.getEnumeration();
+			while (messages.hasMoreElements()) {
+				TextMessage textMessage = (TextMessage) messages.nextElement();
+				assertEquals(message, textMessage.getText());
+			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
