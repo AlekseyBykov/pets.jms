@@ -12,20 +12,21 @@ import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import javax.jms.Topic;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import static java.util.Objects.nonNull;
 import static org.junit.Assert.assertEquals;
 
-public class P2PMessagingTest {
+public class PubSubMessagingTest {
 
 	private static final String connectionFactoryName = "ConnectionFactory";
-	private static final String queueName = "queue/jmsQueue";
+	private static final String topicName = "topic/jmsTopic";
 
 	private static InitialContext initialContext;
 	private static Connection connection;
-	private static Queue queue;
+	private static Topic topic;
 
 	@BeforeClass
 	public static void setup() {
@@ -33,30 +34,36 @@ public class P2PMessagingTest {
 			initialContext = new InitialContext();
 			ConnectionFactory cf = (ConnectionFactory) initialContext.lookup(connectionFactoryName);
 			connection = cf.createConnection();
-			queue = (Queue) initialContext.lookup(queueName);
+			topic = (Topic) initialContext.lookup(topicName);
 		} catch (NamingException | JMSException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Test
-	public void testSendTextMessageToQueueAndThenReceive() {
+	public void testSendTextMessageToTopicAndThenReceive() {
 		try {
 			String message = "message";
-			long timeout = 3000;
 
 			Session session = connection.createSession();
-			MessageProducer producer = session.createProducer(queue);
+			MessageProducer producer = session.createProducer(topic);
 			TextMessage textMessage = session.createTextMessage(message);
 
-			MessageConsumer consumer = session.createConsumer(queue);
+			MessageConsumer firstConsumer = session.createConsumer(topic);
+			MessageConsumer secondConsumer = session.createConsumer(topic);
+			MessageConsumer thirdConsumer = session.createConsumer(topic);
 
 			producer.send(textMessage);
 			connection.start();
 
-			TextMessage receivedMessage = (TextMessage) consumer.receive(timeout);
+			TextMessage firstConsumerMsg = (TextMessage) firstConsumer.receive();
+			TextMessage secondConsumerMsg = (TextMessage) secondConsumer.receive();
+			TextMessage thirdConsumerMsg = (TextMessage) thirdConsumer.receive();
 
-			assertEquals(message, receivedMessage.getText());
+			assertEquals(message, firstConsumerMsg.getText());
+			assertEquals(message, secondConsumerMsg.getText());
+			assertEquals(message, thirdConsumerMsg.getText());
+
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
