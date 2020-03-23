@@ -16,15 +16,13 @@ import static org.junit.Assert.assertEquals;
 public class P2PMessagingTest {
 
 	private static final String queueName = "queue/jmsQueue";
-
-	private static InitialContext initialContext;
 	private static Queue queue;
 
 	@BeforeClass
 	public static void setup() {
 		try {
-			initialContext = new InitialContext();
-			queue = (Queue) initialContext.lookup(queueName);
+			InitialContext ctx = new InitialContext();
+			queue = (Queue) ctx.lookup(queueName);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
