@@ -37,19 +37,22 @@ public class PubSubMessagingTest {
 
 			JMSProducer jmsProducer = jmsContext.createProducer();
 
-			JMSConsumer firstJmsConsumer = jmsContext.createConsumer(topic);
-			JMSConsumer secondJmsConsumer = jmsContext.createConsumer(topic);
-			JMSConsumer thirdJmsConsumer = jmsContext.createConsumer(topic);
+			JMSConsumer[] jmsConsumers = new JMSConsumer[3];
+			jmsConsumers[0] = jmsContext.createConsumer(topic);
+			jmsConsumers[1] = jmsContext.createConsumer(topic);
+			jmsConsumers[2] = jmsContext.createConsumer(topic);
 
 			jmsProducer.send(topic, message);
 
-			String firstConsumerMsg = firstJmsConsumer.receiveBody(String.class);
-			String secondConsumerMsg = secondJmsConsumer.receiveBody(String.class);
-			String thirdConsumerMsg = thirdJmsConsumer.receiveBody(String.class);
+			String[] receivedMessages = new String[3];
 
-			assertEquals(message, firstConsumerMsg);
-			assertEquals(message, secondConsumerMsg);
-			assertEquals(message, thirdConsumerMsg);
+			receivedMessages[0] = jmsConsumers[0].receiveBody(String.class);
+			receivedMessages[1] = jmsConsumers[1].receiveBody(String.class);
+			receivedMessages[2] = jmsConsumers[2].receiveBody(String.class);
+
+			assertEquals(message, receivedMessages[0]);
+			assertEquals(message, receivedMessages[1]);
+			assertEquals(message, receivedMessages[2]);
 		}
 	}
 }

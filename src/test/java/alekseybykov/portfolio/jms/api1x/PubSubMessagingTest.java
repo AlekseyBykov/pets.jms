@@ -48,20 +48,24 @@ public class PubSubMessagingTest {
 			MessageProducer producer = session.createProducer(topic);
 			TextMessage textMessage = session.createTextMessage(message);
 
-			MessageConsumer firstConsumer = session.createConsumer(topic);
-			MessageConsumer secondConsumer = session.createConsumer(topic);
-			MessageConsumer thirdConsumer = session.createConsumer(topic);
+			MessageConsumer[] messageConsumers = new MessageConsumer[3];
+
+			messageConsumers[0] = session.createConsumer(topic);
+			messageConsumers[1] = session.createConsumer(topic);
+			messageConsumers[2] = session.createConsumer(topic);
 
 			producer.send(textMessage);
 			connection.start();
 
-			TextMessage firstConsumerMsg = (TextMessage) firstConsumer.receive();
-			TextMessage secondConsumerMsg = (TextMessage) secondConsumer.receive();
-			TextMessage thirdConsumerMsg = (TextMessage) thirdConsumer.receive();
+			TextMessage[] textMessages = new TextMessage[3];
 
-			assertEquals(message, firstConsumerMsg.getText());
-			assertEquals(message, secondConsumerMsg.getText());
-			assertEquals(message, thirdConsumerMsg.getText());
+			textMessages[0] = (TextMessage) messageConsumers[0].receive();
+			textMessages[1] = (TextMessage) messageConsumers[1].receive();
+			textMessages[2] = (TextMessage) messageConsumers[2].receive();
+
+			assertEquals(message, textMessages[0].getText());
+			assertEquals(message, textMessages[1].getText());
+			assertEquals(message, textMessages[2].getText());
 
 		} catch (JMSException e) {
 			e.printStackTrace();

@@ -73,11 +73,12 @@ public class P2PMessagingTest {
 			Session session = connection.createSession();
 			MessageProducer producer = session.createProducer(queue);
 
-			TextMessage firstTextMessage = session.createTextMessage(message);
-			TextMessage secondTextMessage = session.createTextMessage(message);
+			TextMessage[] textMessages = new TextMessage[2];
+			textMessages[0] = session.createTextMessage(message);
+			textMessages[1] = session.createTextMessage(message);
 
-			producer.send(firstTextMessage);
-			producer.send(secondTextMessage);
+			producer.send(textMessages[0]);
+			producer.send(textMessages[1]);
 
 			QueueBrowser queueBrowser = session.createBrowser(queue);
 			Enumeration messages = queueBrowser.getEnumeration();
