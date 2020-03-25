@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PubSubMessagingTest {
 
-	private static final String topicName = "topic/jmsTopic";
+	private static final String topicName = "topic/API2xPubSubMessagingTopic";
 	private static Topic topic;
 
 	@BeforeClass

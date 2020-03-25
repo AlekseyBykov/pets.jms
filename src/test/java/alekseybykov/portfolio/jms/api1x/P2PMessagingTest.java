@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 public class P2PMessagingTest {
 
 	private static final String connectionFactoryName = "ConnectionFactory";
-	private static final String queueName = "queue/jmsQueue";
+	private static final String queueName = "queue/API1xP2PMessagingQueue";
 
 	private static InitialContext initialContext;
 	private static Connection connection;

@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 public class P2PMessagingTest {
 
-	private static final String queueName = "queue/jmsQueue";
+	private static final String queueName = "queue/API2xP2PMessagingQueue";
 	private static Queue queue;
 
 	@BeforeClass

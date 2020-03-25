@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 public class PubSubMessagingTest {
 
 	private static final String connectionFactoryName = "ConnectionFactory";
-	private static final String topicName = "topic/jmsTopic";
+	private static final String topicName = "topic/API1xPubSubMessagingTopic";
 
 	private static InitialContext initialContext;
 	private static Connection connection;
