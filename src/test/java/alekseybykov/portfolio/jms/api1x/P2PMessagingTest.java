@@ -21,6 +21,10 @@ import java.util.Enumeration;
 import static java.util.Objects.nonNull;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Aleksey Bykov
+ * @since 22.03.2020
+ */
 public class P2PMessagingTest {
 
 	private static final String connectionFactoryName = "ConnectionFactory";

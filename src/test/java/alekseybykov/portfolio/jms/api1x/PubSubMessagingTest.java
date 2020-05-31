@@ -18,6 +18,10 @@ import javax.naming.NamingException;
 import static java.util.Objects.nonNull;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Aleksey Bykov
+ * @since 22.03.2020
+ */
 public class PubSubMessagingTest {
 
 	private static final String connectionFactoryName = "ConnectionFactory";

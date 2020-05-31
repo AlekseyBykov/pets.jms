@@ -13,6 +13,10 @@ import javax.naming.NamingException;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Aleksey Bykov
+ * @since 23.03.2020
+ */
 public class PubSubMessagingTest {
 
 	private static final String topicName = "topic/API2xPubSubMessagingTopic";

@@ -15,6 +15,10 @@ import javax.naming.NamingException;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Aleksey Bykov
+ * @since 23.03.2020
+ */
 public class PriorityTest {
 
 	private static final String queueName = "queue/API2xPriorityQueue";
